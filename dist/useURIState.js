@@ -22,9 +22,10 @@ const URIStateContextProvider = ({ children }) => {
     const history = react_router_dom_1.useHistory();
     const uriQueryParams = react_1.default.useMemo(() => new URLSearchParams(history.location.search), [history.location.search]);
     const uriGetter = react_1.default.useCallback((name, isArray) => {
+        var _a, _b;
         if (!isArray)
-            return uriQueryParams.getAll(name);
-        return uriQueryParams.get(name);
+            return ((_a = uriQueryParams.getAll(name)) !== null && _a !== void 0 ? _a : []);
+        return (_b = uriQueryParams.get(name)) !== null && _b !== void 0 ? _b : "";
     }, [uriQueryParams]);
     const uriSetter = react_1.default.useCallback((name, value, append) => {
         const newSearchQuery = new URLSearchParams(history.location.search);
