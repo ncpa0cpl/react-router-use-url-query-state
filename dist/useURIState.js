@@ -38,7 +38,10 @@ const URIStateContextProvider = ({ children }) => {
             }
         }
         else {
-            newSearchQuery.set(name, value);
+            if (value)
+                newSearchQuery.set(name, value);
+            else
+                newSearchQuery.delete(name);
         }
         history.replace({
             pathname: history.location.pathname,

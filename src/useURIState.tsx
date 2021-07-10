@@ -57,7 +57,8 @@ export const URIStateContextProvider: React.FC = ({ children }) => {
           newSearchQuery.append(name, val);
         }
       } else {
-        newSearchQuery.set(name, value);
+        if (value) newSearchQuery.set(name, value);
+        else newSearchQuery.delete(name);
       }
 
       history.replace({
