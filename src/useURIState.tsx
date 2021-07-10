@@ -36,8 +36,10 @@ export const URIStateContextProvider: React.FC = ({ children }) => {
   const uriGetter: URIStateContextType["uriGetter"] = React.useCallback(
     <IA extends boolean = false>(name: string, isArray?: IA): ParamType<IA> => {
       if (!isArray)
-        return (uriQueryParams.getAll(name) as unknown) as ParamType<IA>;
-      return (uriQueryParams.get(name) as unknown) as ParamType<IA>;
+        return (
+          ((uriQueryParams.getAll(name) as unknown) as ParamType<IA>) ?? []
+        );
+      return ((uriQueryParams.get(name) as unknown) as ParamType<IA>) ?? "";
     },
     [uriQueryParams]
   );
