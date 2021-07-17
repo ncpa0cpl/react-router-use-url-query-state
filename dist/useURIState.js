@@ -24,7 +24,7 @@ const URIStateContextProvider = ({ children }) => {
     const uriGetter = react_1.default.useCallback((name, isArray) => {
         var _a, _b;
         if (!isArray)
-            return ((_a = uriQueryParams.getAll(name)) !== null && _a !== void 0 ? _a : []);
+            return (_a = uriQueryParams.getAll(name)) !== null && _a !== void 0 ? _a : [];
         return (_b = uriQueryParams.get(name)) !== null && _b !== void 0 ? _b : "";
     }, [uriQueryParams]);
     const uriSetter = react_1.default.useCallback((name, value, append) => {
@@ -59,13 +59,13 @@ function useURIState(initName, initVal) {
     const [name] = react_1.default.useState(initName);
     const [isArray] = react_1.default.useState(() => (typeof initVal === "string"));
     const URIContext = react_1.default.useContext(URIStateContext);
-    const [value, setValue] = react_1.default.useState(() => URIContext.uriGetter(name, isArray));
-    const set = (val) => {
+    const [value, setValue] = react_1.default.useState(() => { var _a; return (_a = URIContext.uriGetter(name, isArray)) !== null && _a !== void 0 ? _a : initVal; });
+    const set = react_1.default.useCallback((val) => {
         URIContext.uriSetter(name, val, false);
-    };
-    const append = (val) => {
+    }, [URIContext.uriSetter]);
+    const append = react_1.default.useCallback((val) => {
         URIContext.uriSetter(name, val, true);
-    };
+    }, [URIContext.uriSetter]);
     react_1.default.useEffect(() => {
         if (!value || value.length === 0) {
             switch (typeof initVal) {
@@ -79,12 +79,14 @@ function useURIState(initName, initVal) {
         }
     }, []);
     react_1.default.useEffect(() => {
-        setValue(URIContext.uriGetter(name, isArray));
+        const v = URIContext.uriGetter(name, isArray);
+        if (!Object.is(v, value))
+            setValue(v);
     }, [URIContext.params]);
-    return {
+    return react_1.default.useMemo(() => ({
         value,
         set,
         append,
-    };
+    }), [value, set, append]);
 }
 exports.useURIState = useURIState;

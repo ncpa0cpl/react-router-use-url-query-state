@@ -36,10 +36,8 @@ export const URIStateContextProvider: React.FC = ({ children }) => {
   const uriGetter: URIStateContextType["uriGetter"] = React.useCallback(
     <IA extends boolean = false>(name: string, isArray?: IA): ParamType<IA> => {
       if (!isArray)
-        return (
-          ((uriQueryParams.getAll(name) as unknown) as ParamType<IA>) ?? []
-        );
-      return ((uriQueryParams.get(name) as unknown) as ParamType<IA>) ?? "";
+        return (uriQueryParams.getAll(name) as unknown as ParamType<IA>) ?? [];
+      return (uriQueryParams.get(name) as unknown as ParamType<IA>) ?? "";
     },
     [uriQueryParams]
   );
@@ -95,17 +93,23 @@ export function useURIState<V extends string | string[]>(
 
   const URIContext = React.useContext(URIStateContext);
 
-  const [value, setValue] = React.useState(() =>
-    URIContext.uriGetter(name, isArray)
+  const [value, setValue] = React.useState(
+    () => URIContext.uriGetter(name, isArray) ?? initVal
   );
 
-  const set = (val: ParamType<IA>) => {
-    URIContext.uriSetter(name, val, false);
-  };
+  const set = React.useCallback(
+    (val: ParamType<IA>) => {
+      URIContext.uriSetter(name, val, false);
+    },
+    [URIContext.uriSetter]
+  );
 
-  const append = (val: ParamType<IA>) => {
-    URIContext.uriSetter(name, val, true);
-  };
+  const append = React.useCallback(
+    (val: ParamType<IA>) => {
+      URIContext.uriSetter(name, val, true);
+    },
+    [URIContext.uriSetter]
+  );
 
   React.useEffect(() => {
     if (!value || value.length === 0) {
@@ -121,12 +125,16 @@ export function useURIState<V extends string | string[]>(
   }, []);
 
   React.useEffect(() => {
-    setValue(URIContext.uriGetter(name, isArray));
+    const v = URIContext.uriGetter(name, isArray);
+    if (!Object.is(v, value)) setValue(v);
   }, [URIContext.params]);
 
-  return {
-    value,
-    set,
-    append,
-  };
+  return React.useMemo(
+    () => ({
+      value,
+      set,
+      append,
+    }),
+    [value, set, append]
+  );
 }
