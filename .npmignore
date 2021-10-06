@@ -1,0 +1,15 @@
+__tests__
+.husky
+.vscode
+coverage
+examples
+node_modules
+scripts
+src
+.eslintignore
+.eslintrc.json
+.gitignore
+.prettierrc.json
+jest.config.js
+tsconfig.json
+

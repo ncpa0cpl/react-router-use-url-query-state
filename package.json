@@ -1,22 +1,56 @@
 {
-  "name": "react-use-uri-state",
-  "version": "1.0.2",
-  "description": "",
-  "keywords": [],
-  "main": "dist/index.js",
+  "name": "react-router-use-url-query-state",
+  "version": "1.1.0",
+  "description": "React hook that leverages the React Router to create a state that's synchronized with the query parameters in the browser url.",
+  "keywords": [
+    "react",
+    "hook",
+    "router",
+    "state",
+    "url",
+    "query"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "peerDependencies": {
     "react": ">16.8.0",
     "react-dom": ">16.8.0",
+    "react-router": "^5.2.0",
     "react-router-dom": ">5.0.0"
   },
-  "dependencies": {},
   "devDependencies": {
-    "@types/react-router-dom": "5.1.8",
+    "@testing-library/react-hooks": "^7.0.2",
+    "@types/jest": "^27.0.2",
     "@types/react": "17.0.0",
     "@types/react-dom": "17.0.0",
-    "typescript": "*"
+    "@types/react-router-dom": "5.1.8",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.2",
+    "jest": "^27.2.4",
+    "prettier": "^2.4.1",
+    "simple-git": "^2.46.0",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.3"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "rm -rf ./dist && tsc -p ./tsconfig.build.json",
+    "test": "jest --coverage",
+    "tsc": "tsc --noEmit",
+    "lint": "eslint .",
+    "prettier:check": "prettier --check ./src/* && prettier --check ./__tests__/*",
+    "prettier:fix": "prettier --write ./src/* && prettier --write ./__tests__/*",
+    "prepare:push": "ts-node ./scripts/push-prepare.ts"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Bretner Szymon (ncpa0cpl)",
+    "url": "https://github.com/ncpa0cpl"
+  },
+  "displayName": "React Router - Use URL Query State",
+  "repository": {
+    "url": "https://github.com/ncpa0cpl/react-router-use-url-state-state"
   }
 }
